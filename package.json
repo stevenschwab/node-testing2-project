@@ -5,6 +5,8 @@
   "scripts": {
     "start": "node index.js",
     "server": "nodemon index.js",
+    "migrate:dev": "knex migrate:latest --env development",
+    "seed:dev": "knex seed:run --env development",
     "migrate": "knex migrate:latest",
     "rollback": "knex migrate:rollback",
     "seed": "knex seed:run",
