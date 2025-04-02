@@ -15,10 +15,22 @@ afterAll(async () => {
 })
 
 describe('users model', () => {
-    describe('getAll()', () => {
+    describe('getAllUsers()', () => {
         it('gets empty list when no users in db', async () => {
             const users = await User.getAllUsers()
             expect(users).toHaveLength(0)
         })
+
+        it('can get a list with all users in db', async () => {
+            const username = "david"
+            const email = "david@example.com"
+            const user = await User.createUser(username, email);
+            let users = await User.getAllUsers();
+            expect(users).toHaveLength(1);
+
+            await User.createUser("steve", "steven.schwab1@gmail.com");
+            users = await User.getAllUsers();
+            expect(users).toHaveLength(2);
+        });
     })
 })
