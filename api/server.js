@@ -36,7 +36,7 @@ server.post('/users', async (req, res, next) => {
         if (!username || !email) {
             return res.status(400).json({ error: 'Username and email are required' })
         }
-        const newUser = await User.createUser(username, email)
+        const newUser = await User.createUser({ username, email })
         res.status(201).json(newUser)
     } catch (error) {
         next(error)
@@ -50,7 +50,7 @@ server.put('/users/:id', async (req, res, next) => {
         if (!username || !email) {
             return res.status(400).json({ error: 'Username and email are required' })
         }
-        const updatedUser = await User.updateUser(req.params.id, username, email)
+        const updatedUser = await User.updateUser(req.params.id, { username, email })
         res.json(updatedUser)
     } catch (error) {
         next({ ...error, status: error.message === 'User not found' ? 404 : 500})

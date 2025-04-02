@@ -19,9 +19,9 @@ async function getUserById(id) {
 }
 
 // Create a new user
-async function createUser(username, email) {
-    const [id] = await db('users').insert({ username, email })
-    return { id, username, email }
+async function createUser(user) {
+    const [id] = await db('users').insert(user)
+    return db('users').where({ id }).first()
 }
 
 // Update a user by id
