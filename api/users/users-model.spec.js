@@ -35,7 +35,14 @@ describe('users model', () => {
     })
 
     describe('getUserById(id)', () => {
-        test.todo('can find a user by id')
+        it('can find a user by id', async () => {
+            await User.createUser({ username: 'caz', email: 'gaffer@gmail.com' })
+            await User.createUser({ username: 'tax', email: 'anti@gmail.com' })
+            const caz = await User.getUserById(1)
+            const tax = await User.getUserById(2)
+            expect(caz).toMatchObject({ id: 1, username: 'caz', email: 'gaffer@gmail.com' })
+            expect(tax).toMatchObject({ id: 2, username: 'tax', email: 'anti@gmail.com' })
+        })
     })
 
     describe('createUser(username, email)', () => {
