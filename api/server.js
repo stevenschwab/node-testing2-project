@@ -4,8 +4,6 @@ const server = express();
 
 server.use(express.json());
 
-// --- Endpoints ---
-
 server.get('/', async (req, res) => {
     res.status(200).json({ api: 'up' });
 });
