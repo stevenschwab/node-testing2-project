@@ -25,10 +25,10 @@ async function createUser(username, email) {
 }
 
 // Update a user by id
-async function updateUser(id, username, email) {
-    const updatedRows = await db('users').where({ id }).update({ username, email })
+async function updateUser(id, changes) {
+    const updatedRows = await db('users').where({ id }).update(changes)
     if (updatedRows === 0) throw new Error('User not found')
-    return { id, username, email }
+    return db('users').where({ id }).first()
 }
 
 // Delete a user by id

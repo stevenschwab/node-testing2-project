@@ -58,7 +58,11 @@ describe('users model', () => {
     })
 
     describe('updateUser(id, username, email)', () => {
-        test.todo('updates the user')
+        it('updates the user', async () => {
+            await User.createUser('schwabs', 'steven.schwab1@gmail.com')
+            const updated = await User.updateUser(1, { username: 'sam' })
+            expect(updated).toMatchObject({ id: 1, username: 'sam', email: 'steven.schwab1@gmail.com' })
+        })
     })
 
     describe('deleteUserById(id)', () => {
