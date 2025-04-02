@@ -3,10 +3,12 @@ const db = require('../../data/db-config.js')
 module.exports = {
     getAllUsers,
     getUserById,
-    createUser
+    createUser,
+    updateUser,
+    deleteUserById
 }
 
-// GET /users - Fetch all users
+// Fetch all users
 async function getAllUsers() {
     return db('users').select('*')
 }
