@@ -92,7 +92,6 @@ describe('server.js', () => {
             expect(res.body).toMatchObject(Sam)
         })
         it('responds with a 404 if id not in db', async () => {
-            await User.createUser(Sam)
             const res = await request(server).get('/users/2')
             expect(res.status).toBe(404)
         })
@@ -103,12 +102,32 @@ describe('server.js', () => {
     })
 
     describe('[POST] /users', () => {
-        test.todo('responds with 201')
-        test.todo('returns the newly created user')
-        test.todo('responds with 400 if username empty')
-        test.todo('responds with 400 if email empty')
-        test.todo('responds with 400 if username and email are empty')
-        test.todo('responds with error message if username or email are empty')
+        it('responds with 201', async () => {
+            let res = await request(server).post('/users').send(Sam)
+            expect(res.status).toBe(201)
+        })
+        it('returns the newly created user', async () => {
+            let res = await request(server).post('/users').send(Sam)
+            expect(res.body.id).toBe(1)
+            expect(res.body.username).toBe('Sam')
+            expect(res.body.email).toBe('sam@gmail.com')
+        })
+        it('responds with 400 if username empty', async () => {
+            let res = await request(server).post('/users').send({ username: '', email: 'sam@gmail.com' })
+            expect(res.status).toBe(400)
+        })
+        it('responds with 400 if email empty', async () => {
+            let res = await request(server).post('/users').send({ username: 'sam', email: '' })
+            expect(res.status).toBe(400)
+        })
+        it('responds with 400 if username and email are empty', async () => {
+            let res = await request(server).post('/users').send({ username: '', email: '' })
+            expect(res.status).toBe(400)
+        })
+        it('responds with error message if username or email are empty', async () => {
+            let res = await request(server).post('/users').send({ username: '', email: '' })
+            expect(res.body.error).toBe('Username and email are required')
+        })
     })
 
     describe('[PUT] /users/:id', () => {
