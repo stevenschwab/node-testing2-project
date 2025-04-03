@@ -81,10 +81,25 @@ describe('server.js', () => {
     })
 
     describe('[GET] /users/:id', () => {
-        test.todo('responds with 200 OK')
-        test.todo('responds with the user with the given id')
-        test.todo('responds with a 404 if id not in db')
-        test.todo('responds with error message User not found if id not in db')
+        it('responds with 200 OK', async () => {
+            await User.createUser(Sam)
+            const res = await request(server).get('/users/1')
+            expect(res.status).toBe(200)
+        })
+        it('responds with the user with the given id', async () => {
+            await User.createUser(Sam)
+            let res = await request(server).get('/users/1')
+            expect(res.body).toMatchObject(Sam)
+        })
+        it('responds with a 404 if id not in db', async () => {
+            await User.createUser(Sam)
+            const res = await request(server).get('/users/2')
+            expect(res.status).toBe(404)
+        })
+        it('responds with error message [User not found] if id not in db', async () => {
+            const res = await request(server).get('/users/1')
+            expect(res.body.error).toBe('User not found')
+        })
     })
 
     describe('[POST] /users', () => {
