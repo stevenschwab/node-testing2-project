@@ -131,11 +131,29 @@ describe('server.js', () => {
     })
 
     describe('[PUT] /users/:id', () => {
-        test.todo('responds with 200 OK')
-        test.todo('responds with 400 if username or email are empty')
-        test.todo('responds with error message [username and email are required] if username or email are empty')
-        test.todo('responds with error message [User not found] if user id does not exist')
-        test.todo('responds with 404 if user id does not exist')
+        it('responds with 200 OK', async () => {
+            await User.createUser(Sam)
+            let res = await request(server).put('/users/1').send({ username: 'gaffer', email: 'sam@gmail.com' })
+            expect(res.status).toBe(200)
+        })
+        it('responds with 400 if username or email are empty', async () => {
+            await User.createUser(Sam)
+            let res = await request(server).put('/users/1').send({ username: '', email: 'sam@gmail.com' })
+            expect(res.status).toBe(400)
+        })
+        it('responds with error message [username and email are required] if username or email are empty', async () => {
+            await User.createUser(Sam)
+            let res = await request(server).put('/users/1').send({ username: 'gaffer', email: '' })
+            expect(res.status).toBe(400)
+        })
+        it('responds with error message [User not found] if user id does not exist', async () => {
+            let res = await request(server).put('/users/1').send({ username: 'gaffer', email: 'sam@gmail.com' })
+            expect(res.body.error).toBe('User not found')
+        })
+        it('responds with 404 if user id does not exist', async () => {
+            let res = await request(server).put('/users/1').send({ username: 'gaffer', email: 'sam@gmail.com' })
+            expect(res.status).toBe(404)
+        })
     })
 
     describe('[DELETE] /users/:id', () => {

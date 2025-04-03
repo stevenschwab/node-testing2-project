@@ -51,9 +51,11 @@ server.put('/users/:id', async (req, res, next) => {
             return res.status(400).json({ error: 'Username and email are required' })
         }
         const updatedUser = await User.updateUser(req.params.id, { username, email })
-        if (!updatedUser) return res.status(404).json({ error: 'User not found'})
         res.json(updatedUser)
     } catch (error) {
+        if (error.message === 'User not found') {
+            return res.status(404).json({ error: 'User not found' });
+        }
         next(error)
     }
 })
