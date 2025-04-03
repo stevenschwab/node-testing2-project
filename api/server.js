@@ -51,9 +51,10 @@ server.put('/users/:id', async (req, res, next) => {
             return res.status(400).json({ error: 'Username and email are required' })
         }
         const updatedUser = await User.updateUser(req.params.id, { username, email })
+        if (!updatedUser) return res.status(404).json({ error: 'User not found'})
         res.json(updatedUser)
     } catch (error) {
-        next({ ...error, status: error.message === 'User not found' ? 404 : 500})
+        next(error)
     }
 })
 
@@ -63,7 +64,7 @@ server.delete('/users/:id', async (req, res, next) => {
         await User.deleteUserById(req.params.id)
         res.json({ message: 'User deleted successfully' })
     } catch (error) {
-        next({ ...error, status: error.message === 'User not found' ? 404 : 500})
+        next(error)
     }
 })
 
