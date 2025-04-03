@@ -157,8 +157,23 @@ describe('server.js', () => {
     })
 
     describe('[DELETE] /users/:id', () => {
-        test.todo('responds with 200 OK')
-        test.todo('responds with success message if user deleted successfully')
-        test.todo('responds with error message if user id does not exist')
+        it('responds with 200 OK', async () => {
+            await User.createUser(Sam)
+            let res = await request(server).del('/users/1')
+            expect(res.status).toBe(200)
+        })
+        it('responds with success message if user deleted successfully', async () => {
+            await User.createUser(Sam)
+            let res = await request(server).del('/users/1')
+            expect(res.body.message).toBe('User deleted successfully')
+        })
+        it('responds with error message if user id does not exist', async () => {
+            let res = await request(server).del('/users/1')
+            expect(res.body.error).toBe('User not found')
+        })
+        it('responds with 404 if user id does not exist', async () => {
+            let res = await request(server).del('/users/1')
+            expect(res.status).toBe(404)
+        })
     })
 })

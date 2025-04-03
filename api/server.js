@@ -66,6 +66,9 @@ server.delete('/users/:id', async (req, res, next) => {
         await User.deleteUserById(req.params.id)
         res.json({ message: 'User deleted successfully' })
     } catch (error) {
+        if (error.message === 'User not found') {
+            return res.status(404).json({ error: 'User not found' });
+        }
         next(error)
     }
 })
